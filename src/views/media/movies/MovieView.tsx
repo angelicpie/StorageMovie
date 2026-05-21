@@ -1,5 +1,5 @@
 import { DetailItem, LinkGroup, Modal } from '@/components';
-import { type MovieRespsonse, getBackdropUrl, getImageUrl, MOVIE_ENDPOINT, TV_ENDPOINT} from '@/core';
+import { type MovieResponse, getBackdropUrl, getImageUrl, MOVIE_ENDPOINT, TV_ENDPOINT} from '@/core';
 import { useTmdb } from '@/hooks';
 import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ export const MovieView = () => {
   const { pathname } = useLocation();
   const isTvRoute = pathname.startsWith('/tv/show/');
   const endpoint = isTvRoute ? TV_ENDPOINT : MOVIE_ENDPOINT;
-  const { data } = useTmdb<MovieRespsonse>(`${endpoint}/${id}`, { append_to_response: 'videos' });
+  const { data } = useTmdb<MovieResponse>(`${endpoint}/${id}`, { append_to_response: 'videos' });
 
   if (!data) {
     return <p className="text-center text-gray-400">Loading...</p>;
@@ -21,7 +21,7 @@ export const MovieView = () => {
   const releaseDate = data.first_air_date ?? data.release_date;
 
   return (
-    <Modal onClose={() => navigate(-1)}>
+    <Modal onClick={() => navigate(-1)}>
       <div className="grid h-full grid-rows-[auto_1fr]">
         <img className="h-50 w-full rounded-2xl object-cover" src={getBackdropUrl(data.backdrop_path)} alt={data.title} />
         <div className="grid min-h-0 grid-cols-[auto_1fr] gap-5 p-5">

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { UserContext } from "@/context";
+import { UserContext } from "@/context/UserContext";
 import { FAVORITES_KEY, type ImageCell, USERNAME_KEY } from "@/core";
 import { useLocalStorage } from "@/hooks";
 

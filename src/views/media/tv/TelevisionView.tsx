@@ -1,5 +1,5 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
-import { getImageUrl, TV_ENDPOINT, type ImageCell, type MovieRespsonse } from '@/core';
+import { getImageUrl, TV_ENDPOINT, type ImageCell, type MovieResponse } from '@/core';
 import { useTmdb } from '@/hooks';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,12 +9,12 @@ export const TelevisionView = () => {
   const [page, setPage] = useState<number>(1);
   const { filterType = 'airing_today' } = useParams();
 
-  const { data } = useTmdb<MovieRespsonse>(`${TV_ENDPOINT}/${filterType}`, { page });
+  const { data } = useTmdb<MovieResponse>(`${TV_ENDPOINT}/${filterType}`, { page });
 
   const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
     id: result.id,
     imageUrl: getImageUrl(result.poster_path),
-    primaryText: result.name,
+    // primaryText: result.name,
   }));
 
   if (!data) {

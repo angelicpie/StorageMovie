@@ -1,5 +1,5 @@
-import {  MOVIE_ENDPOINT, TV_ENDPOINT } from '@/core/constants/components';
-import type { MovieRespsonse } from '@/core/types/types';
+import {  MOVIE_ENDPOINT, TV_ENDPOINT } from '@/core';
+import type { MovieResponse } from '@/core';
 import { useTmdb } from '@/hooks';
 import { useParams, useLocation } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ export const TrailerView = () => {
   const isTv = pathname.startsWith('/tv/show/');
   const endpoint = isTv ? TV_ENDPOINT : MOVIE_ENDPOINT;
 
-  const { data } = useTmdb<MovieRespsonse>(`${endpoint}/${id}`, { append_to_response: 'videos' });
+  const { data } = useTmdb<MovieResponse>(`${endpoint}/${id}`, { append_to_response: 'videos' });
 
   const trailerVideo =
     data?.videos?.results.find((v) => v.site === 'YouTube' && v.type === 'Trailer' && v.name?.toLowerCase().includes('official')) ||
