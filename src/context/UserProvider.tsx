@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { UserContext } from "./";
+import { UserContext } from "@/context";
 import { FAVORITES_KEY, type ImageCell, USERNAME_KEY } from "@/core";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useLocalStorage } from "@/hooks";
 
 type UserProviderProps = {
   children: ReactNode;

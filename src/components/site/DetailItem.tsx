@@ -5,9 +5,9 @@ type DetailItemProps = {
 
 export const DetailItem = ({ label, value }: DetailItemProps) => {
   return (
-    <div className="bg-gray-800/60 rounded-lg p-3">
-      <p className="text-xs text-gray-400">{label}</p>
-      <p className="text-sm font-semibold">{value}</p>
+    <div className="rounded-lg bg-gray-800/60 p-3">
+      <p className="text-gray-400 text-xs">{label}</p>
+      <p className="font-semibold text-sm">{value}</p>
     </div>
   );
 };
