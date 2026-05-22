@@ -28,12 +28,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     });
   };
 
+  const clearFavorites = () => setFavorites(new Map());
+
   return (
     <UserContext.Provider
       value={{
         favorites,
         setUserName,
         toggleFavorite,
+        clearFavorites,
         userName,
       }}
     >

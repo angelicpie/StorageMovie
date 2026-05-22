@@ -6,6 +6,7 @@ export type UserContextType = {
   favorites: Map<number, ImageCell>;
   setUserName: (userName: string) => void;
   toggleFavorite: (image: ImageCell) => void;
+  clearFavorites: () => void;
 };
 
 export const UserContext = createContext<UserContextType | undefined>(undefined);
