@@ -27,6 +27,11 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         cloned.delete(image.id);
       } else {
         cloned.set(image.id, image);
+        setCart((prev) => { 
+          const cloned = new Map(prev);
+          cloned.delete(image.id);
+          return cloned;
+        });
       }
 
       return cloned;
@@ -41,6 +46,11 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         cloned.delete(image.id);
       } else {
         cloned.set(image.id, image);
+          setFavorites((prev) => { 
+          const cloned = new Map(prev);
+          cloned.delete(image.id);
+          return cloned;
+        });
       }
 
       return cloned;
