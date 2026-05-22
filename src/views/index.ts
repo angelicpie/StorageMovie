@@ -15,6 +15,7 @@ export * from '@/views/media/TrailersView';
 export * from '@/views/media/TrendingView';
 export * from '@/views/user/FavoritesView';
 export * from '@/views/user/SettingsView';
+export * from '@/views/user/CartView';
 
 
 

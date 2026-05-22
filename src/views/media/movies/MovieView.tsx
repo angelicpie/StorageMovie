@@ -1,10 +1,12 @@
+import { FaShoppingCart } from "react-icons/fa";
 import { DetailItem, LinkGroup, Modal } from '@/components';
-import { type MovieResponse, getBackdropUrl, getImageUrl, MOVIE_ENDPOINT, TV_ENDPOINT} from '@/core';
-import { useTmdb } from '@/hooks';
+import { type MovieResponse, getBackdropUrl, getImageUrl, MOVIE_ENDPOINT, TV_ENDPOINT, ICON_SIZE} from '@/core';
+import { useTmdb, useUserContext } from '@/hooks';
 import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom';
 
 export const MovieView = () => {
   const navigate = useNavigate();
+  const { cart, toggleCart } = useUserContext();
   const { id } = useParams();
   const { pathname } = useLocation();
   const isTvRoute = pathname.startsWith('/tv/show/');
@@ -33,6 +35,24 @@ export const MovieView = () => {
               <DetailItem label="Release" value={releaseDate} />
               <DetailItem label="Rating" value={data.vote_average} />
             </div>
+
+              <button
+                className="rounded-full p-2 transition hover:bg-black/40"
+                onClick={() =>
+                  toggleCart({
+                    id: data.id,
+                    imageUrl: getImageUrl(data.poster_path),
+                    primaryText: data.title,
+                  })
+                }
+              >
+                {cart.has(data.id) ? (
+                  <FaShoppingCart className="text-blue-500" size={ICON_SIZE} />
+                ) : (
+                  <FaShoppingCart className="text-white" size={ICON_SIZE} />
+                )}
+              </button>
+              
             <LinkGroup
               options={[
                 ...(isTv ? [{ label: 'Seasons', to: 'seasons' }] : []),

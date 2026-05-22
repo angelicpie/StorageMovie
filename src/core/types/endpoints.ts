@@ -71,15 +71,15 @@ export type EpisodeResponse = {
 };
 
 
-export type Media = 'movie' | 'tv';
+// export type Media = 'movie' | 'tv';
 
-export type ImageCell = {
-  id: number;
-  imageUrl: string;
-  primaryText: string;
-  secondaryText?: string;
-  media?: Media;
-};
+// export type ImageCell = {
+//   id: number;
+//   imageUrl: string;
+//   primaryText: string;
+//   secondaryText?: string;
+//   media?: Media;
+// };
 
 export type PersonResponse = {
   id: number;
@@ -103,12 +103,12 @@ export type CareerResponse = {
   }>
 };
 
-export type ImagesResponse = {
-  profiles: Array<{
-    id: number;
-    file_path: string;
-  }>
-};
+// export type ImagesResponse = {
+//   profiles: Array<{
+//     id: number;
+//     file_path: string;
+//   }>
+// };
 
 export type SearchResponse = {
   total_pages: number;

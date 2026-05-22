@@ -1,4 +1,4 @@
-import { FaRegHeart } from "react-icons/fa";
+import { FaRegHeart, FaShoppingCart } from "react-icons/fa";
 import { GoGear } from "react-icons/go";
 import { Link, SearchBar, ButtonGroup } from '@/components';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { useUserContext } from "@/hooks";
 
 export const Header = () => {
 const navigate = useNavigate();
-const { userName, favorites } = useUserContext();
+const { userName, favorites, cart } = useUserContext();
 const [searchParams, setSearchParams] = useSearchParams();
 const query = searchParams.get('q') ?? '';
 const mediaType = searchParams.get('mediaType') || 'movie';
@@ -41,6 +41,16 @@ const updateParam = (key: string, value: string) => {
               </span>
             )}
           </button>
+
+          <button className="relative rounded-full p-2 transition hover:bg-gray-700" onClick={() => navigate("/cart")}>
+            <FaShoppingCart size={ICON_SIZE} />
+            {cart.size > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-[10px] text-white">
+                {cart.size}
+              </span>
+            )}
+          </button>
+
           <button className="relative rounded-full p-2 transition hover:bg-gray-700" onClick={() => navigate("/settings")}>
             <GoGear size={ICON_SIZE} />
           </button>
