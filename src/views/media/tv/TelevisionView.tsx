@@ -14,7 +14,6 @@ export const TelevisionView = () => {
   const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
     id: result.id,
     imageUrl: getImageUrl(result.poster_path),
-    // primaryText: result.name,
   }));
 
   if (!data) {
@@ -23,7 +22,6 @@ export const TelevisionView = () => {
 
   return (
     <section className="max-w-7xl mx-auto space-y-5 p-5">
-      <h1 className="text-3xl font-bold mb-4">TV</h1>
       <ButtonGroup
         value={filterType}
         options={[

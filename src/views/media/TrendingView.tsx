@@ -1,5 +1,5 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
-import { getImageUrl, type ImageCell, type MovieRespsonse, TRENDING_ENDPOINT } from '@/core';
+import { getImageUrl, type ImageCell, type MovieResponse, TRENDING_ENDPOINT } from '@/core';
 import { useTmdb } from '@/hooks';
 import { useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -11,7 +11,7 @@ export const TrendingView = () => {
   const { mediaType = 'movie' } = useParams();
   const interval = searchParams.get('interval') ?? 'day';
 
-  const { data } = useTmdb<MovieRespsonse>(`${TRENDING_ENDPOINT}/${mediaType}/${interval}`, { page });
+  const { data } = useTmdb<MovieResponse>(`${TRENDING_ENDPOINT}/${mediaType}/${interval}`, { page });
 
   const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
     id: result.id,
@@ -24,7 +24,6 @@ export const TrendingView = () => {
   return (
     <section className="max-w-7xl mx-auto space-y-5 p-5">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-3xl font-bold">Trending</h1>
         <ButtonGroup
           value={mediaType}
           options={[

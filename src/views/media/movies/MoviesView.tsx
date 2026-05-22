@@ -1,5 +1,5 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
-import { getImageUrl, MOVIE_ENDPOINT, type ImageCell, type MovieRespsonse } from '@/core';
+import { getImageUrl, MOVIE_ENDPOINT, type ImageCell, type MovieResponse } from '@/core';
 import { useTmdb } from '@/hooks';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ export const MoviesView = () => {
   const [page, setPage] = useState<number>(1);
   const { filterType = 'now_playing' } = useParams();
 
-  const { data } = useTmdb<MovieRespsonse>(`${MOVIE_ENDPOINT}/${filterType}`, { page });
+  const { data } = useTmdb<MovieResponse>(`${MOVIE_ENDPOINT}/${filterType}`, { page });
 
   const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
     id: result.id,
@@ -23,7 +23,6 @@ export const MoviesView = () => {
 
   return (
     <section className="max-w-7xl mx-auto space-y-5 p-5">
-      <h1 className="text-3xl font-bold mb-4">Movies</h1>
       <ButtonGroup
         value={filterType}
         options={[

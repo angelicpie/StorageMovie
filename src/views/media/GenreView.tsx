@@ -1,5 +1,5 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
-import { getImageUrl, type MovieRespsonse, type ImageCell, MOVIE_GENRES_ENDPOINT, TV_GENRES_ENDPOINT } from '@/core';
+import { getImageUrl, type MovieResponse, type ImageCell, MOVIE_GENRES_ENDPOINT, TV_GENRES_ENDPOINT } from '@/core';
 import { useTmdb } from '@/hooks';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -40,7 +40,7 @@ export const GenreView = () => {
   const genreId = genres.find((g) => g.value === genre)?.id ?? genres[0].id;
   const endpoint = isMovie ? MOVIE_GENRES_ENDPOINT : TV_GENRES_ENDPOINT;
 
-  const { data } = useTmdb<MovieRespsonse>(endpoint, { page, with_genres: genreId });
+  const { data } = useTmdb<MovieResponse>(endpoint, { page, with_genres: genreId });
 
   const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
     id: result.id,
@@ -60,9 +60,8 @@ export const GenreView = () => {
 
   return (
     <section className="max-w-[1200px] mx-auto p-5 space-y-5">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-3xl font-bold">Genre</h1>
-        <div className="flex flex-col items-end gap-3">
+      <div className="flex justify-between">
+        <div className="flex flex-col items-start gap-3">
           <ButtonGroup
             value={mediaType}
             options={[
