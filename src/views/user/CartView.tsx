@@ -16,7 +16,7 @@ export const CartView = () => {
             className="rounded-lg bg-red-500/20 px-4 py-2 text-sm text-red-400 transition hover:bg-red-500/40"
             onClick={clearCart}
           >
-            Clear All
+            Empty Cart
           </button>
         )}
       </div>
