@@ -1,7 +1,7 @@
 import { getImageUrl, TV_ENDPOINT, type SeasonsResponse } from '@/core';
 import { useTmdb, useUserContext } from '@/hooks';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaShoppingCart } from "react-icons/fa";
 import { ICON_SIZE } from "@/core";
 
 export const SeasonsView = () => {
@@ -9,6 +9,8 @@ export const SeasonsView = () => {
   const navigate = useNavigate();
   const { data } = useTmdb<SeasonsResponse>(`${TV_ENDPOINT}/${id}`, {});
   const { favorites, toggleFavorite } = useUserContext();
+  const { cart, toggleCart } = useUserContext();
+
 
   if (!data) {
     return <p className="text-center text-gray-400">Loading...</p>;
@@ -50,6 +52,23 @@ export const SeasonsView = () => {
                 <FaRegHeart className="text-gray-300" size={ICON_SIZE} />
               )}
             </button>
+
+            <button
+                className="rounded-full p-2 transition hover:bg-black/40"
+                onClick={() =>
+                  toggleCart({
+                    id: season.id,
+                    imageUrl: getImageUrl(season.poster_path),
+                    primaryText: season.name,
+                  })
+                }
+              >
+                {cart.has(season.id) ? (
+                  <FaShoppingCart className="text-blue-500" size={ICON_SIZE} />
+                ) : (
+                  <FaShoppingCart className="text-white" size={ICON_SIZE} />
+                )}
+              </button>
           </div>
         ))
       ) : (
