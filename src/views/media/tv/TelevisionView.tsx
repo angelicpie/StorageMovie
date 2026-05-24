@@ -14,6 +14,7 @@ export const TelevisionView = () => {
   const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
     id: result.id,
     imageUrl: getImageUrl(result.poster_path),
+    primaryText: result.name,
   }));
 
   if (!data) {
