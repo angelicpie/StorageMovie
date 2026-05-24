@@ -36,6 +36,7 @@ export const MovieView = () => {
               <DetailItem label="Rating" value={data.vote_average} />
             </div>
 
+            {!isTv && (
               <button
                 className="rounded-full p-2 transition hover:bg-black/40"
                 onClick={() =>
@@ -52,7 +53,8 @@ export const MovieView = () => {
                   <FaShoppingCart className="text-white" size={ICON_SIZE} />
                 )}
               </button>
-              
+            )}
+            
             <LinkGroup
               options={[
                 ...(isTv ? [{ label: 'Seasons', to: 'seasons' }] : []),
