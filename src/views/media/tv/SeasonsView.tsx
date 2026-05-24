@@ -8,9 +8,7 @@ export const SeasonsView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data } = useTmdb<SeasonsResponse>(`${TV_ENDPOINT}/${id}`, {});
-  const { favorites, toggleFavorite } = useUserContext();
-  const { cart, toggleCart } = useUserContext();
-
+  const { favorites, toggleFavorite, cart, toggleCart } = useUserContext();
 
   if (!data) {
     return <p className="text-center text-gray-400">Loading...</p>;
@@ -19,7 +17,6 @@ export const SeasonsView = () => {
   return (
     <section className="px-2 space-y-4">
       <h2 className="text-2xl font-bold">Seasons</h2>
-
       {data.seasons?.length ? (
         data.seasons.slice(0, 5).map((season) => (
           <div
@@ -32,7 +29,6 @@ export const SeasonsView = () => {
               src={getImageUrl(season.poster_path)}
               alt={season.name}
             />
-
             <p className="text-white font-semibold flex-1">{season.name}</p>
 
             <button
@@ -43,6 +39,7 @@ export const SeasonsView = () => {
                   id: season.id,
                   imageUrl: getImageUrl(season.poster_path),
                   primaryText: season.name,
+                  mediaType: 'tv' as const,
                 });
               }}
             >
@@ -54,21 +51,23 @@ export const SeasonsView = () => {
             </button>
 
             <button
-                className="rounded-full p-2 transition hover:bg-black/40"
-                onClick={() =>
-                  toggleCart({
-                    id: season.id,
-                    imageUrl: getImageUrl(season.poster_path),
-                    primaryText: season.name,
-                  })
-                }
-              >
-                {cart.has(season.id) ? (
-                  <FaShoppingCart className="text-blue-500" size={ICON_SIZE} />
-                ) : (
-                  <FaShoppingCart className="text-white" size={ICON_SIZE} />
-                )}
-              </button>
+              className="rounded-full p-2 transition hover:bg-black/40"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleCart({
+                  id: season.id,
+                  imageUrl: getImageUrl(season.poster_path),
+                  primaryText: season.name,
+                  mediaType: 'tv' as const,
+                });
+              }}
+            >
+              {cart.has(season.id) ? (
+                <FaShoppingCart className="text-blue-500" size={ICON_SIZE} />
+              ) : (
+                <FaShoppingCart className="text-white" size={ICON_SIZE} />
+              )}
+            </button>
           </div>
         ))
       ) : (

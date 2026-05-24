@@ -14,6 +14,7 @@ export const TrendingView = () => {
   const { mediaType = 'movie' } = useParams();
   const interval = searchParams.get('interval') ?? 'day';
   const { favorites, toggleFavorite } = useUserContext();
+  const isMovie = mediaType === 'movie';
 
   const { data } = useTmdb<MovieResponse>(`${TRENDING_ENDPOINT}/${mediaType}/${interval}`, { page });
 
@@ -21,6 +22,7 @@ export const TrendingView = () => {
     id: result.id,
     imageUrl: getImageUrl(result.poster_path),
     primaryText: result.original_title ?? result.name,
+    mediaType: isMovie ? 'movie' : 'tv' as const,
   }));
 
   if (!data) return <p className="text-center text-gray-400">Loading...</p>;

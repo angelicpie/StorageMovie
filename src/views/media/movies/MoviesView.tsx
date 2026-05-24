@@ -1,11 +1,10 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
 import { getImageUrl, MOVIE_ENDPOINT, type ImageCell, type MovieResponse } from '@/core';
-import { useTmdb } from '@/hooks';
+import { useTmdb, useUserContext } from '@/hooks';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { ICON_SIZE } from "@/core";
-import { useUserContext } from "@/hooks";
 
 export const MoviesView = () => {
   const navigate = useNavigate();
@@ -20,6 +19,7 @@ export const MoviesView = () => {
     id: result.id,
     imageUrl: getImageUrl(result.poster_path),
     primaryText: result.original_title,
+    mediaType: 'movie' as const,
   }));
 
   if (!data) {

@@ -50,6 +50,7 @@ export const GenreView = () => {
     id: result.id,
     imageUrl: getImageUrl(result.poster_path),
     primaryText: result.original_title ?? result.name,
+    mediaType: isMovie ? 'movie' : 'tv' as const,
   }));
 
   const handleMediaTypeSwitch = (value: string) => {

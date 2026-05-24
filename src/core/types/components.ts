@@ -8,6 +8,7 @@ export type ImageCell = {
   primaryText?: string;
   secondaryText?: string;
   media?: Media;
+  mediaType?: 'movie' | 'tv';
 };
 
 export type ImageAction = {
