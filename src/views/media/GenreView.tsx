@@ -1,8 +1,11 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
 import { getImageUrl, type MovieResponse, type ImageCell, MOVIE_GENRES_ENDPOINT, TV_GENRES_ENDPOINT } from '@/core';
-import { useTmdb } from '@/hooks';
+import { useTmdb, useUserContext } from '@/hooks';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { ICON_SIZE } from "@/core";
+
 
 export const GENRES = {
   movies: [
@@ -34,6 +37,7 @@ export const GenreView = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
   const { mediaType = 'movies', genre = 'action' } = useParams();
+  const { favorites, toggleFavorite } = useUserContext();
 
   const isMovie = mediaType === 'movies';
   const genres = GENRES[mediaType as keyof typeof GENRES] ?? GENRES.movies;
@@ -85,7 +89,23 @@ export const GenreView = () => {
         onClick={(image) =>
           navigate(isMovie ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/credits`)
         }
-      />
+      >
+        {(image) => (
+          <button
+            className="absolute top-2 right-2 z-10 rounded-full bg-black/50 p-2 transition hover:bg-black/70"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFavorite(image);
+            }}
+          >
+            {favorites.has(image.id) ? (
+              <FaHeart className="text-blue-500" size={ICON_SIZE} />
+            ) : (
+              <FaRegHeart className="text-white" size={ICON_SIZE} />
+            )}
+          </button>
+        )}
+      </ImageGrid>
       <Pagination page={page} maxPages={data.total_pages} onClick={setPage} />
     </section>
   );
