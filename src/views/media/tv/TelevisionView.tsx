@@ -36,7 +36,7 @@ export const TelevisionView = () => {
           setPage(1);
         }}
       />
-      <ImageGrid images={gridData} onClick={(image) => navigate(`/tv/show/${image.id}/credits`)} />
+      <ImageGrid images={gridData} onClick={(image) => navigate(`/tv/show/${image.id}/seasons`)} />
       <Pagination page={page} maxPages={data.total_pages} onClick={setPage} />
     </section>
   );

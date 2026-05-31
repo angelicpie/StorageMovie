@@ -1,5 +1,5 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
-import { getImageUrl, MOVIE_ENDPOINT, type ImageCell, type MovieResponse } from '@/core';
+import { getImageUrl, MOVIE_ENDPOINT, type ImageCell, type MovieResponse, calculatePrice } from '@/core';
 import { useTmdb, useUserContext } from '@/hooks';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -15,16 +15,18 @@ export const MoviesView = () => {
 
   const { data } = useTmdb<MovieResponse>(`${MOVIE_ENDPOINT}/${filterType}`, { page });
 
+  if (!data) {
+    return <p className="text-center text-gray-400">Loading...</p>;
+  }
+
   const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
     id: result.id,
     imageUrl: getImageUrl(result.poster_path),
     primaryText: result.original_title,
+    secondaryText: `$${calculatePrice(result).toFixed(2)}`,
     mediaType: 'movie' as const,
   }));
 
-  if (!data) {
-    return <p className="text-center text-gray-400">Loading...</p>;
-  }
 
   return (
     <section className="max-w-7xl mx-auto space-y-5 p-5">

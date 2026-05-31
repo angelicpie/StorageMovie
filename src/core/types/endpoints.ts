@@ -14,6 +14,8 @@ export type MovieResponse = {
     original_title: string;
     original_name?: string;  
     poster_path: string;
+    release_date?: string;
+    first_air_date?: string;
   }>;
   videos?: {
     results: Array<{
@@ -25,6 +27,11 @@ export type MovieResponse = {
   };
   total_pages: number;
 };
+
+export type PriceInput = {
+  release_date?: string;
+  air_date?: string;
+}
 
 export type CreditsResponse = {
   cast: Array<{
