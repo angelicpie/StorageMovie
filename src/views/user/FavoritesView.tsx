@@ -45,7 +45,7 @@ export const FavoritesView = () => {
           onClick={(image) =>
             isMovie
               ? navigate(`/movie/${image.id}/credits`)
-              : navigate(`/tv/show/${image.id}/credits`)
+              : navigate(`/tv/show/${image.secondaryID}/seasons`)
           }
         >
           {(image) => (

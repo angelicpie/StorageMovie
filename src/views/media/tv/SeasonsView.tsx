@@ -41,6 +41,7 @@ export const SeasonsView = () => {
                     id: season.id,
                     imageUrl: getImageUrl(season.poster_path),
                     primaryText: season.name,
+                    secondaryID: id,
                     mediaType: 'tv' as const,
                   });
                 }}
@@ -59,6 +60,7 @@ export const SeasonsView = () => {
                     id: season.id,
                     imageUrl: getImageUrl(season.poster_path),
                     primaryText: season.name,
+                    secondaryID: id,
                     mediaType: 'tv' as const,
                   });
                 }}

@@ -15,6 +15,7 @@ export const TelevisionView = () => {
     id: result.id,
     imageUrl: getImageUrl(result.poster_path),
     primaryText: result.name,
+    mediaType: 'tv' as const,
   }));
 
   if (!data) {

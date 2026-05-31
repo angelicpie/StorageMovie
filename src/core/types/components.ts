@@ -7,6 +7,7 @@ export type ImageCell = {
   imageUrl: string;
   primaryText?: string;
   secondaryText?: string;
+  secondaryID?: string;
   media?: Media;
   mediaType?: 'movie' | 'tv';
 };

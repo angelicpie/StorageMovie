@@ -88,7 +88,7 @@ export const GenreView = () => {
       <ImageGrid
         images={gridData}
         onClick={(image) =>
-          navigate(isMovie ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/credits`)
+          navigate(isMovie ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/seasons`)
         }
       >
         {(image) => (
