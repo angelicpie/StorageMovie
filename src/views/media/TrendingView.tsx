@@ -56,23 +56,25 @@ export const TrendingView = () => {
       <ImageGrid
         images={gridData}
         onClick={(image) =>
-          navigate(mediaType === 'movie' ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/credits`)
+          navigate(mediaType === 'movie' ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/seasons`)
         }
       >
         {(image) => (
-          <button
-            className="absolute top-2 right-2 z-10 rounded-full bg-black/50 p-2 transition hover:bg-black/70"
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleFavorite(image);
-            }}
-          >
-            {favorites.has(image.id) ? (
-              <FaHeart className="text-blue-500" size={ICON_SIZE} />
-            ) : (
-              <FaRegHeart className="text-white" size={ICON_SIZE} />
-            )}
-          </button>
+          isMovie && (
+            <button
+              className="absolute top-2 right-2 z-10 rounded-full bg-black/50 p-2 transition hover:bg-black/70"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleFavorite(image);
+              }}
+            >
+              {favorites.has(image.id) ? (
+                <FaHeart className="text-blue-500" size={ICON_SIZE} />
+              ) : (
+                <FaRegHeart className="text-white" size={ICON_SIZE} />
+              )}
+            </button>
+          )
         )}
       </ImageGrid>
       <Pagination page={page} maxPages={data.total_pages} onClick={setPage} />
