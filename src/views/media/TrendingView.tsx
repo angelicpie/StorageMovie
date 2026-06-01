@@ -1,11 +1,9 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
-import { getImageUrl, type ImageCell, type MovieResponse, TRENDING_ENDPOINT, calculatePrice} from '@/core';
+import { ICON_SIZE, TRENDING_ENDPOINT, calculatePrice, getImageUrl, type ImageCell, type MovieResponse } from '@/core';
 import { useTmdb, useUserContext } from '@/hooks';
 import { useState } from 'react';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { ICON_SIZE } from "@/core";
-
 
 export const TrendingView = () => {
   const navigate = useNavigate();
@@ -22,7 +20,7 @@ export const TrendingView = () => {
     id: result.id,
     imageUrl: getImageUrl(result.poster_path),
     primaryText: result.original_title ?? result.name,
-    mediaType: isMovie ? 'movie' : 'tv' as const,
+    mediaType: isMovie ? 'movie' : ('tv' as const),
     secondaryText: isMovie ? `$${calculatePrice(result).toFixed(2)}` : undefined,
   }));
 
@@ -56,11 +54,9 @@ export const TrendingView = () => {
       </div>
       <ImageGrid
         images={gridData}
-        onClick={(image) =>
-          navigate(mediaType === 'movie' ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/seasons`)
-        }
+        onClick={(image) => navigate(mediaType === 'movie' ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/seasons`)}
       >
-        {(image) => (
+        {(image) =>
           isMovie && (
             <button
               className="absolute top-2 right-2 z-10 rounded-full bg-black/50 p-2 transition hover:bg-black/70"
@@ -76,7 +72,7 @@ export const TrendingView = () => {
               )}
             </button>
           )
-        )}
+        }
       </ImageGrid>
       <Pagination page={page} maxPages={data.total_pages} onClick={setPage} />
     </section>

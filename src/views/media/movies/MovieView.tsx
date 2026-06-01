@@ -1,8 +1,8 @@
-import { FaShoppingCart } from "react-icons/fa";
 import { DetailItem, LinkGroup, Modal } from '@/components';
-import { type MovieResponse, getBackdropUrl, getImageUrl, MOVIE_ENDPOINT, TV_ENDPOINT, ICON_SIZE} from '@/core';
+import { type MovieResponse, getBackdropUrl, getImageUrl, ICON_SIZE, MOVIE_ENDPOINT, TV_ENDPOINT } from '@/core';
 import { useTmdb, useUserContext } from '@/hooks';
-import { Outlet, useNavigate, useParams, useLocation } from 'react-router-dom';
+import { FaShoppingCart } from 'react-icons/fa';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export const MovieView = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export const MovieView = () => {
   if (!data) {
     return <p className="text-center text-gray-400">Loading...</p>;
   }
-  
+
   const isTv = !!data.first_air_date;
 
   const title = data.name ?? data.title;
@@ -54,7 +54,7 @@ export const MovieView = () => {
                 )}
               </button>
             )}
-            
+
             <LinkGroup
               options={[
                 ...(isTv ? [{ label: 'Seasons', to: 'seasons' }] : []),
@@ -63,7 +63,7 @@ export const MovieView = () => {
                 { label: 'Trailers', to: 'trailers' },
               ]}
             />
-            <Outlet context={{data}} />
+            <Outlet context={{ data }} />
           </div>
         </div>
       </div>

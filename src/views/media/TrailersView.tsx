@@ -1,7 +1,7 @@
-import {  MOVIE_ENDPOINT, TV_ENDPOINT } from '@/core';
 import type { MovieResponse } from '@/core';
+import { MOVIE_ENDPOINT, TV_ENDPOINT } from '@/core';
 import { useTmdb } from '@/hooks';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 export const TrailerView = () => {
   const { id } = useParams();
@@ -21,16 +21,20 @@ export const TrailerView = () => {
   }
 
   return (
-    <section className='gap-8 flex-1 space-y-4'>
-      <div className='flex-1 space-y-4'>
+    <section className="gap-8 flex-1 space-y-4">
+      <div className="flex-1 space-y-4">
         <h1 className="text-3xl font-bold">Trailer</h1>
         {trailerVideo && (
           <div className="aspect-video">
-            <iframe className="w-full h-full rounded-xl"
-            src={`https://www.youtube.com/embed/${trailerVideo.key}`} title="Movie Trailer" allowFullScreen />
-          </div> 
+            <iframe
+              className="w-full h-full rounded-xl"
+              src={`https://www.youtube.com/embed/${trailerVideo.key}`}
+              title="Movie Trailer"
+              allowFullScreen
+            />
+          </div>
         )}
-      </div> 
+      </div>
     </section>
   );
 };

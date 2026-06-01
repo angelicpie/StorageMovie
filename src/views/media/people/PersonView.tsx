@@ -1,8 +1,8 @@
-import { getImageUrl, PERSON_ENDPOINT, type PersonResponse } from '@/core';
 import { LinkGroup } from '@/components';
+import { getImageUrl, PERSON_ENDPOINT, type PersonResponse } from '@/core';
 import { useTmdb } from '@/hooks';
-import { useNavigate, useParams, Outlet } from 'react-router-dom';
-import { FaBirthdayCake } from "react-icons/fa";
+import { FaBirthdayCake } from 'react-icons/fa';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 export const PersonView = () => {
   const { id } = useParams();
@@ -15,10 +15,7 @@ export const PersonView = () => {
 
   return (
     <section className="max-w-7xl mx-auto p-5 space-y-8">
-      <button
-        onClick={() => navigate(-1)}
-        className="text-gray-400 hover:text-white text-sm flex items-center gap-2"
-      >
+      <button onClick={() => navigate(-1)} className="text-gray-400 hover:text-white text-sm flex items-center gap-2">
         ← Back
       </button>
       <div className="flex gap-6">
@@ -34,12 +31,12 @@ export const PersonView = () => {
       </div>
       <div className="space-y-4">
         <LinkGroup
-            options={[
-              { label: 'Career', to: 'career' },
-              { label: 'Images', to: 'images' },
-            ]}
-          />
-          <Outlet />
+          options={[
+            { label: 'Career', to: 'career' },
+            { label: 'Images', to: 'images' },
+          ]}
+        />
+        <Outlet />
       </div>
     </section>
   );

@@ -20,3 +20,10 @@ export type ImageAction = {
   onClick: (image: ImageCell) => void;
   position: "left" | "right";
 };
+
+export type ImagesResponse = {
+  profiles: Array<{
+    id: number;
+    file_path: string;
+  }>
+};

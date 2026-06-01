@@ -1,10 +1,17 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
-import { getImageUrl, type MovieResponse, type ImageCell, MOVIE_GENRES_ENDPOINT, TV_GENRES_ENDPOINT, calculatePrice } from '@/core';
-import { useTmdb, useUserContext, useLocalStorage } from '@/hooks';
+import {
+  ICON_SIZE,
+  MOVIE_GENRES_ENDPOINT,
+  TV_GENRES_ENDPOINT,
+  calculatePrice,
+  getImageUrl,
+  type ImageCell,
+  type MovieResponse,
+} from '@/core';
+import { useLocalStorage, useTmdb, useUserContext } from '@/hooks';
 import { useState } from 'react';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { ICON_SIZE } from "@/core";
 
 export const GENRES = {
   movies: [
@@ -41,8 +48,8 @@ export const GenreView = () => {
   const { mediaType = 'movies', genre = 'action' } = useParams();
   const { favorites, toggleFavorite } = useUserContext();
 
-  const [savedMovieGenres] = useLocalStorage<string[]>("preferred_movie_genres", allMovieLabels);
-  const [savedTvGenres] = useLocalStorage<string[]>("preferred_tv_genres", allTvLabels);
+  const [savedMovieGenres] = useLocalStorage<string[]>('preferred_movie_genres', allMovieLabels);
+  const [savedTvGenres] = useLocalStorage<string[]>('preferred_tv_genres', allTvLabels);
 
   const isMovie = mediaType === 'movies';
   const allGenres = GENRES[mediaType as keyof typeof GENRES] ?? GENRES.movies;
@@ -58,7 +65,7 @@ export const GenreView = () => {
     id: result.id,
     imageUrl: getImageUrl(result.poster_path),
     primaryText: result.original_title ?? result.name,
-    mediaType: isMovie ? 'movie' : 'tv' as const,
+    mediaType: isMovie ? 'movie' : ('tv' as const),
     secondaryText: isMovie ? `$${calculatePrice(result).toFixed(2)}` : undefined,
     price: isMovie ? calculatePrice(result) : undefined,
   }));
@@ -95,13 +102,8 @@ export const GenreView = () => {
           />
         </div>
       </div>
-      <ImageGrid
-        images={gridData}
-        onClick={(image) =>
-          navigate(isMovie ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/seasons`)
-        }
-      >
-        {(image) => (
+      <ImageGrid images={gridData} onClick={(image) => navigate(isMovie ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/seasons`)}>
+        {(image) =>
           isMovie && (
             <button
               className="absolute top-2 right-2 z-10 rounded-full bg-black/50 p-2 transition hover:bg-black/70"
@@ -117,7 +119,7 @@ export const GenreView = () => {
               )}
             </button>
           )
-        )}
+        }
       </ImageGrid>
       <Pagination page={page} maxPages={data.total_pages} onClick={setPage} />
     </section>

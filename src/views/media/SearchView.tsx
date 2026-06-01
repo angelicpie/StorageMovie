@@ -1,9 +1,9 @@
 import { ImageGrid, Pagination } from '@/components';
-import { type ImageCell, type SearchResponse, getImageUrl, RATE_LIMIT_DELAY, SEARCH_ENDPOINT, ICON_SIZE } from '@/core';
+import { type ImageCell, type SearchResponse, getImageUrl, ICON_SIZE, RATE_LIMIT_DELAY, SEARCH_ENDPOINT } from '@/core';
 import { useDebounce, useTmdb, useUserContext } from '@/hooks';
 import { useState } from 'react';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 export const SearchView = () => {
   const navigate = useNavigate();

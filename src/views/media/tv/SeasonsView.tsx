@@ -1,8 +1,7 @@
-import { getImageUrl, TV_ENDPOINT, type SeasonsResponse, calculatePrice } from '@/core';
+import { calculatePrice, getImageUrl, ICON_SIZE, TV_ENDPOINT, type SeasonsResponse } from '@/core';
 import { useTmdb, useUserContext } from '@/hooks';
-import { useParams, useNavigate } from 'react-router-dom';
-import { FaHeart, FaRegHeart, FaShoppingCart } from "react-icons/fa";
-import { ICON_SIZE } from "@/core";
+import { FaHeart, FaRegHeart, FaShoppingCart } from 'react-icons/fa';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const SeasonsView = () => {
   const { id } = useParams();
@@ -29,11 +28,7 @@ export const SeasonsView = () => {
                 className="relative rounded-2xl overflow-hidden cursor-pointer shadow-lg group"
                 onClick={() => navigate(`/tv/show/${id}/season/${season.season_number}`)}
               >
-                <img
-                  className="w-full aspect-[2/3] object-cover"
-                  src={getImageUrl(season.poster_path)}
-                  alt={season.name}
-                />
+                <img className="w-full aspect-[2/3] object-cover" src={getImageUrl(season.poster_path)} alt={season.name} />
                 <button
                   className="absolute top-2 left-2 bg-blue-500 rounded-full p-1.5 shadow transition active:scale-90"
                   onClick={(e) => {
@@ -44,15 +39,12 @@ export const SeasonsView = () => {
                       primaryText: season.name,
                       secondaryID: id,
                       mediaType: 'tv' as const,
-                      secondaryText: `$${calculatePrice(season).toFixed(2)}`, 
+                      secondaryText: `$${calculatePrice(season).toFixed(2)}`,
                       price: calculatePrice(season),
                     });
                   }}
                 >
-                  {isFav
-                    ? <FaHeart className="text-white" size={ICON_SIZE} />
-                    : <FaRegHeart className="text-white" size={ICON_SIZE} />
-                  }
+                  {isFav ? <FaHeart className="text-white" size={ICON_SIZE} /> : <FaRegHeart className="text-white" size={ICON_SIZE} />}
                 </button>
 
                 <button
@@ -70,10 +62,7 @@ export const SeasonsView = () => {
                     });
                   }}
                 >
-                  <FaShoppingCart
-                    className={inCart ? "text-blue-400" : "text-white"}
-                    size={ICON_SIZE}
-                  />
+                  <FaShoppingCart className={inCart ? 'text-blue-400' : 'text-white'} size={ICON_SIZE} />
                 </button>
 
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-2 pt-6 pb-2">

@@ -1,7 +1,7 @@
-import { MOVIE_ENDPOINT, TV_ENDPOINT } from '@/core';
 import type { ReviewsResponse } from '@/core';
+import { MOVIE_ENDPOINT, TV_ENDPOINT } from '@/core';
 import { useTmdb } from '@/hooks';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 export const ReviewsView = () => {
   const { id } = useParams();

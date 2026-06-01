@@ -1,10 +1,9 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
-import { getImageUrl, MOVIE_ENDPOINT, type ImageCell, type MovieResponse, calculatePrice } from '@/core';
+import { calculatePrice, getImageUrl, ICON_SIZE, MOVIE_ENDPOINT, type ImageCell, type MovieResponse } from '@/core';
 import { useTmdb, useUserContext } from '@/hooks';
 import { useState } from 'react';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { ICON_SIZE } from "@/core";
 
 export const MoviesView = () => {
   const navigate = useNavigate();
@@ -28,7 +27,6 @@ export const MoviesView = () => {
     price: calculatePrice(result),
   }));
 
-
   return (
     <section className="max-w-7xl mx-auto space-y-5 p-5">
       <ButtonGroup
@@ -44,14 +42,14 @@ export const MoviesView = () => {
           setPage(1);
         }}
       />
-          
-      <ImageGrid images={gridData} onClick={(image) => navigate(`/movie/${image.id}/credits`)}> 
+
+      <ImageGrid images={gridData} onClick={(image) => navigate(`/movie/${image.id}/credits`)}>
         {(image) => (
           <button
             className="absolute top-2 right-2 z-10 rounded-full bg-black/50 p-2 transition hover:bg-black/70"
             onClick={(e) => {
-                e.stopPropagation();
-                toggleFavorite(image);
+              e.stopPropagation();
+              toggleFavorite(image);
             }}
           >
             {favorites.has(image.id) ? (

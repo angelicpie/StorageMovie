@@ -1,5 +1,24 @@
 import { MainLayout } from '@/layouts/MainLayout';
-import { CartView, ErrorView, GenreView, HomeView, ReviewsView, TrendingView, MoviesView, TelevisionView, CreditsView, TrailerView, SeasonsView, EpisodeView, PersonView, CareerView, ImagesView, SearchView, FavoritesView, SettingsView } from '@/views';
+import {
+  CareerView,
+  CartView,
+  CreditsView,
+  EpisodeView,
+  ErrorView,
+  FavoritesView,
+  GenreView,
+  HomeView,
+  ImagesView,
+  MoviesView,
+  PersonView,
+  ReviewsView,
+  SearchView,
+  SeasonsView,
+  SettingsView,
+  TelevisionView,
+  TrailerView,
+  TrendingView,
+} from '@/views';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { MovieView } from './views/media/movies/MovieView';
 
@@ -20,7 +39,7 @@ export const App = () => {
           <Route path="trailers" element={<TrailerView />} />
         </Route>
 
-      <Route path="/tv" element={<Navigate to="/tv/category/airing_today" replace />} />
+        <Route path="/tv" element={<Navigate to="/tv/category/airing_today" replace />} />
         <Route path="/tv/category/:filterType" element={<TelevisionView />} />
         <Route path="/tv/show/:id" element={<MovieView />}>
           <Route path="reviews" element={<ReviewsView />} />
@@ -36,11 +55,11 @@ export const App = () => {
           <Route path="images" element={<ImagesView />} />
         </Route>
 
-      <Route path="/search" element={<SearchView />}></Route> 
+        <Route path="/search" element={<SearchView />}></Route>
 
-      <Route path="/favorites" element={<FavoritesView />}></Route>
-      <Route path="/cart" element={<CartView />}></Route>
-      <Route path="/settings" element={<SettingsView />}></Route>
+        <Route path="/favorites" element={<FavoritesView />}></Route>
+        <Route path="/cart" element={<CartView />}></Route>
+        <Route path="/settings" element={<SettingsView />}></Route>
       </Route>
       <Route path="*" element={<ErrorView />} />
     </Routes>

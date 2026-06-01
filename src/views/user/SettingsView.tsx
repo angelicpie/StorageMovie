@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { Button } from "@/components";
-import { useUserContext } from "@/hooks";
-import { useLocalStorage } from "@/hooks";
-import { GENRES } from "@/views";
+import { Button } from '@/components';
+import { useLocalStorage, useUserContext } from '@/hooks';
+import { GENRES } from '@/views';
+import { useState } from 'react';
 
 const movieGenreList = GENRES.movies.map((g) => g.label);
 const tvGenreList = GENRES.tv.map((g) => g.label);
@@ -10,10 +9,10 @@ const tvGenreList = GENRES.tv.map((g) => g.label);
 export const SettingsView = () => {
   const { userName, setUserName } = useUserContext();
   const [value, setValue] = useState(userName);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
-  const [savedMovieGenres, setSavedMovieGenres] = useLocalStorage<string[]>("preferred_movie_genres", movieGenreList);
-  const [savedTvGenres, setSavedTvGenres] = useLocalStorage<string[]>("preferred_tv_genres", tvGenreList);
+  const [savedMovieGenres, setSavedMovieGenres] = useLocalStorage<string[]>('preferred_movie_genres', movieGenreList);
+  const [savedTvGenres, setSavedTvGenres] = useLocalStorage<string[]>('preferred_tv_genres', tvGenreList);
 
   function handleMovieGenre(label: string) {
     if (savedMovieGenres.includes(label)) {
@@ -34,18 +33,17 @@ export const SettingsView = () => {
   function handleSave() {
     const trimmed = value.trim();
     if (!trimmed) {
-      setError("Username cannot be empty");
+      setError('Username cannot be empty');
       return;
     }
     setUserName(trimmed);
-    setError("");
+    setError('');
   }
 
   return (
     <section className="mx-auto max-w-7xl space-y-5 p-5">
       <h1 className="font-bold text-3xl">Settings</h1>
       <div className="grid grid-cols-2 gap-6 items-start">
-
         <div className="space-y-4 rounded-2xl border border-gray-700 bg-gray-900 p-6">
           <div>
             <h2 className="font-semibold text-lg">Profile</h2>
@@ -57,7 +55,7 @@ export const SettingsView = () => {
               className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onChange={(e) => {
                 setValue(e.target.value);
-                setError("");
+                setError('');
               }}
               placeholder="Enter your name"
               type="text"
@@ -66,7 +64,9 @@ export const SettingsView = () => {
             {error && <p className="text-red-400 text-sm">{error}</p>}
           </div>
           <div className="flex justify-end gap-2">
-            <Button onClick={() => setValue(userName)} variant="grey">Reset</Button>
+            <Button onClick={() => setValue(userName)} variant="grey">
+              Reset
+            </Button>
             <Button onClick={handleSave}>Save</Button>
           </div>
         </div>
@@ -83,12 +83,10 @@ export const SettingsView = () => {
               {movieGenreList.map((label) => {
                 const isSelected = savedMovieGenres.includes(label);
                 return (
-                  <button
-                    key={label}
-                    onClick={() => handleMovieGenre(label)}
-                    className="flex items-center gap-2 text-sm text-left"
-                  >
-                    <span className={`w-5 h-5 rounded flex items-center justify-center shrink-0 ${isSelected ? 'bg-pink-500' : 'bg-gray-700'}`}>
+                  <button key={label} onClick={() => handleMovieGenre(label)} className="flex items-center gap-2 text-sm text-left">
+                    <span
+                      className={`w-5 h-5 rounded flex items-center justify-center shrink-0 ${isSelected ? 'bg-pink-500' : 'bg-gray-700'}`}
+                    >
                       {isSelected && <span className="text-white text-xs">✓</span>}
                     </span>
                     <span className="text-gray-300">{label}</span>
@@ -104,12 +102,10 @@ export const SettingsView = () => {
               {tvGenreList.map((label) => {
                 const isSelected = savedTvGenres.includes(label);
                 return (
-                  <button
-                    key={label}
-                    onClick={() => handleTvGenre(label)}
-                    className="flex items-center gap-2 text-sm text-left"
-                  >
-                    <span className={`w-5 h-5 rounded flex items-center justify-center shrink-0 ${isSelected ? 'bg-pink-500' : 'bg-gray-700'}`}>
+                  <button key={label} onClick={() => handleTvGenre(label)} className="flex items-center gap-2 text-sm text-left">
+                    <span
+                      className={`w-5 h-5 rounded flex items-center justify-center shrink-0 ${isSelected ? 'bg-pink-500' : 'bg-gray-700'}`}
+                    >
                       {isSelected && <span className="text-white text-xs">✓</span>}
                     </span>
                     <span className="text-gray-300">{label}</span>
@@ -119,7 +115,6 @@ export const SettingsView = () => {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );

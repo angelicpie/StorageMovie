@@ -1,5 +1,5 @@
-import { getImageUrl, PERSON_ENDPOINT, type CareerResponse, type ImageCell } from '@/core';
 import { ImageGrid } from '@/components';
+import { getImageUrl, PERSON_ENDPOINT, type CareerResponse, type ImageCell } from '@/core';
 import { useTmdb } from '@/hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -24,7 +24,7 @@ export const CareerView = () => {
       <ImageGrid
         images={gridData}
         onClick={(image) => {
-          const item = data.cast.find(c => c.id === image.id);
+          const item = data.cast.find((c) => c.id === image.id);
           const isTv = item?.media_type === 'tv' || !!item?.first_air_date;
           if (isTv) {
             navigate(`/tv/show/${image.id}/credits`);
