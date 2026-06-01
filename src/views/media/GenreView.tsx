@@ -1,5 +1,5 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
-import { getImageUrl, type MovieResponse, type ImageCell, MOVIE_GENRES_ENDPOINT, TV_GENRES_ENDPOINT } from '@/core';
+import { getImageUrl, type MovieResponse, type ImageCell, MOVIE_GENRES_ENDPOINT, TV_GENRES_ENDPOINT, calculatePrice } from '@/core';
 import { useTmdb, useUserContext } from '@/hooks';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -51,6 +51,7 @@ export const GenreView = () => {
     imageUrl: getImageUrl(result.poster_path),
     primaryText: result.original_title ?? result.name,
     mediaType: isMovie ? 'movie' : 'tv' as const,
+    secondaryText: isMovie ? `$${calculatePrice(result).toFixed(2)}` : undefined,
   }));
 
   const handleMediaTypeSwitch = (value: string) => {

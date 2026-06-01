@@ -10,6 +10,7 @@ export type ImageCell = {
   secondaryID?: string;
   media?: Media;
   mediaType?: 'movie' | 'tv';
+  price?: number;
 };
 
 export type ImageAction = {

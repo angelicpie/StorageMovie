@@ -16,64 +16,76 @@ export const SeasonsView = () => {
 
   return (
     <section className="px-2 space-y-4">
-      <h2 className="text-2xl font-bold">Seasons</h2>
       {data.seasons?.length ? (
-        data.seasons.slice(0, 5).map((season) => {
-          const price = calculatePrice(season);
-          return (
-            <div
-              key={season.id}
-              className="flex gap-4 items-center bg-gray-800 hover:bg-gray-700 p-4 rounded-2xl shadow-lg cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
-              onClick={() => navigate(`/tv/show/${id}/season/${season.season_number}`)}
-            >
-              <img
-                className="w-16 h-24 rounded-xl object-cover shrink-0 shadow-md"
-                src={getImageUrl(season.poster_path)}
-                alt={season.name}
-              />
-              <p className="text-white font-semibold flex-1">{season.name}</p>
-              <p className="text-blue-400 font-semibold">${price.toFixed(2)}</p>
-              <button
-                className="rounded-full p-2 transition hover:bg-white/10 active:scale-90 shrink-0"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleFavorite({
-                    id: season.id,
-                    imageUrl: getImageUrl(season.poster_path),
-                    primaryText: season.name,
-                    secondaryID: id,
-                    mediaType: 'tv' as const,
-                  });
-                }}
+        <div className="grid grid-cols-3 gap-3">
+          {data.seasons.slice(0, 5).map((season) => {
+            const price = calculatePrice(season);
+            const isFav = favorites.has(season.id);
+            const inCart = cart.has(season.id);
+
+            return (
+              <div
+                key={season.id}
+                className="relative rounded-2xl overflow-hidden cursor-pointer shadow-lg group"
+                onClick={() => navigate(`/tv/show/${id}/season/${season.season_number}`)}
               >
-                {favorites.has(season.id) ? (
-                  <FaHeart className="text-blue-500" size={ICON_SIZE} />
-                ) : (
-                  <FaRegHeart className="text-gray-300" size={ICON_SIZE} />
-                )}
-              </button>
-              <button
-                className="rounded-full p-2 transition hover:bg-black/40"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleCart({
-                    id: season.id,
-                    imageUrl: getImageUrl(season.poster_path),
-                    primaryText: season.name,
-                    secondaryID: id,
-                    mediaType: 'tv' as const,
-                  });
-                }}
-              >
-                {cart.has(season.id) ? (
-                  <FaShoppingCart className="text-blue-500" size={ICON_SIZE} />
-                ) : (
-                  <FaShoppingCart className="text-white" size={ICON_SIZE} />
-                )}
-              </button>
-            </div>
-          );
-        })
+                {/* Poster image — tall card */}
+                <img
+                  className="w-full aspect-[2/3] object-cover"
+                  src={getImageUrl(season.poster_path)}
+                  alt={season.name}
+                />
+
+                {/* Top-left: Favorite button */}
+                <button
+                  className="absolute top-2 left-2 bg-blue-500 rounded-full p-1.5 shadow transition active:scale-90"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite({
+                      id: season.id,
+                      imageUrl: getImageUrl(season.poster_path),
+                      primaryText: season.name,
+                      secondaryID: id,
+                      mediaType: 'tv' as const,
+                      price: calculatePrice(season), 
+                    });
+                  }}
+                >
+                  {isFav
+                    ? <FaHeart className="text-white" size={ICON_SIZE} />
+                    : <FaRegHeart className="text-white" size={ICON_SIZE} />
+                  }
+                </button>
+
+                <button
+                  className="absolute top-2 right-2 bg-gray-700/80 rounded-full p-1.5 shadow transition active:scale-90"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleCart({
+                      id: season.id,
+                      imageUrl: getImageUrl(season.poster_path),
+                      primaryText: season.name,
+                      secondaryID: id,
+                      mediaType: 'tv' as const,
+                      price: calculatePrice(season), 
+                    });
+                  }}
+                >
+                  <FaShoppingCart
+                    className={inCart ? "text-blue-400" : "text-white"}
+                    size={ICON_SIZE}
+                  />
+                </button>
+
+                {/* Bottom label */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-2 pt-6 pb-2">
+                  <p className="text-white text-xs font-semibold truncate">{season.name}</p>
+                  <p className="text-blue-400 text-xs font-semibold">${price.toFixed(2)}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       ) : (
         <p className="text-gray-400 text-center">No Seasons Available.</p>
       )}

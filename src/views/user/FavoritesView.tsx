@@ -9,7 +9,6 @@ export const FavoritesView = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const mediaType = searchParams.get('mediaType') || 'movie';
   const isMovie = mediaType === 'movie';
-
   const filteredFavorites = Array.from(favorites.values()).filter((item) =>
     isMovie ? item.mediaType === 'movie' : item.mediaType === 'tv'
   );
@@ -27,7 +26,6 @@ export const FavoritesView = () => {
           </button>
         )}
       </div>
-
       <ButtonGroup
         value={mediaType}
         options={[
@@ -36,7 +34,6 @@ export const FavoritesView = () => {
         ]}
         onClick={(value) => setSearchParams({ mediaType: value })}
       />
-
       {filteredFavorites.length === 0 ? (
         <p className="mt-10 text-gray-400">No {isMovie ? 'movie' : 'TV'} favorites yet.</p>
       ) : (

@@ -31,7 +31,7 @@ export const SearchView = () => {
     if (mediaType === 'movie') {
       navigate(`/movie/${image.id}/credits`);
     } else if (mediaType === 'tv') {
-      navigate(`/tv/show/${image.id}/credits`);
+      navigate(`/tv/show/${image.id}/seasons`);
     } else {
       navigate(`/person/${image.id}/career`);
     }
