@@ -8,7 +8,7 @@ import {
   type ImageCell,
   type MovieResponse,
 } from '@/core';
-import { useLocalStorage, useTmdb, useUserContext } from '@/hooks';
+import { useTmdb, useUserContext } from '@/hooks';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -39,21 +39,15 @@ export const GENRES = {
   ],
 };
 
-const allMovieLabels = GENRES.movies.map((g) => g.label);
-const allTvLabels = GENRES.tv.map((g) => g.label);
-
 export const GenreView = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
   const { mediaType = 'movies', genre = 'action' } = useParams();
-  const { favorites, toggleFavorite } = useUserContext();
-
-  const [savedMovieGenres] = useLocalStorage<string[]>('preferred_movie_genres', allMovieLabels);
-  const [savedTvGenres] = useLocalStorage<string[]>('preferred_tv_genres', allTvLabels);
+  const { favorites, toggleFavorite, genrePrefs } = useUserContext();
 
   const isMovie = mediaType === 'movies';
   const allGenres = GENRES[mediaType as keyof typeof GENRES] ?? GENRES.movies;
-  const savedLabels = isMovie ? savedMovieGenres : savedTvGenres;
+  const savedLabels = isMovie ? genrePrefs.movies : genrePrefs.tv;
   const genres = allGenres.filter((g) => savedLabels.includes(g.label));
 
   const genreId = genres.find((g) => g.value === genre)?.id ?? genres[0]?.id;
@@ -102,7 +96,10 @@ export const GenreView = () => {
           />
         </div>
       </div>
-      <ImageGrid images={gridData} onClick={(image) => navigate(isMovie ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/seasons`)}>
+      <ImageGrid
+        images={gridData}
+        onClick={(image) => navigate(isMovie ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/seasons`)}
+      >
         {(image) =>
           isMovie && (
             <button
