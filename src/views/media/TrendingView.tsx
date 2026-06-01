@@ -1,5 +1,5 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
-import { getImageUrl, type ImageCell, type MovieResponse, TRENDING_ENDPOINT } from '@/core';
+import { getImageUrl, type ImageCell, type MovieResponse, TRENDING_ENDPOINT, calculatePrice} from '@/core';
 import { useTmdb, useUserContext } from '@/hooks';
 import { useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -23,6 +23,7 @@ export const TrendingView = () => {
     imageUrl: getImageUrl(result.poster_path),
     primaryText: result.original_title ?? result.name,
     mediaType: isMovie ? 'movie' : 'tv' as const,
+    secondaryText: isMovie ? `$${calculatePrice(result).toFixed(2)}` : undefined,
   }));
 
   if (!data) return <p className="text-center text-gray-400">Loading...</p>;
