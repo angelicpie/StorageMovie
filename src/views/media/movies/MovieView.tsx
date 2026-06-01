@@ -1,5 +1,5 @@
 import { DetailItem, LinkGroup, Modal } from '@/components';
-import { type MovieResponse, getBackdropUrl, getImageUrl, ICON_SIZE, MOVIE_ENDPOINT, TV_ENDPOINT } from '@/core';
+import { calculatePrice, type MovieResponse, getBackdropUrl, getImageUrl, ICON_SIZE, MOVIE_ENDPOINT, TV_ENDPOINT } from '@/core';
 import { useTmdb, useUserContext } from '@/hooks';
 import { FaShoppingCart } from 'react-icons/fa';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -44,6 +44,11 @@ export const MovieView = () => {
                     id: data.id,
                     imageUrl: getImageUrl(data.poster_path),
                     primaryText: data.title,
+                    mediaType: 'movie',
+                    price: calculatePrice({
+                      release_date: data.release_date,
+                      air_date: data.first_air_date,
+                    }),
                   })
                 }
               >
