@@ -5,7 +5,9 @@ import { FaTrash } from "react-icons/fa";
 export const CartView = () => {
   const { cart, toggleCart, toggleFavorite, clearCart } = useUserContext();
   const cartItems = Array.from(cart.values());
-  const total = cartItems.reduce((sum, item) => sum + (item.price ?? 0), 0);
+  const subTotal = cartItems.reduce((sum, item) => sum + (item.price ?? 0), 0);
+  const tax = subTotal * 0.13;
+  const total = subTotal + tax;
 
   return (
     <section className="mx-auto max-w-7xl space-y-5 p-5">
@@ -74,6 +76,16 @@ export const CartView = () => {
 
           <div className="flex justify-end gap-10 border-t border-gray-700 pt-4">
             <p className="text-gray-400 font-medium">Subtotal</p>
+            <p className="text-white font-bold">${subTotal.toFixed(2)}</p>
+          </div>
+
+          <div className="flex justify-end gap-10 border-t border-gray-700 pt-4">
+            <p className="text-gray-400 font-medium">Tax</p>
+            <p className="text-white font-bold">${tax.toFixed(2)}</p>
+          </div>
+
+          <div className="flex justify-end gap-10 border-t border-white-700 pt-4">
+            <p className="text-white-500 font-medium">Total</p>
             <p className="text-white font-bold">${total.toFixed(2)}</p>
           </div>
         </>
