@@ -1,11 +1,10 @@
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
 import { getImageUrl, type MovieResponse, type ImageCell, MOVIE_GENRES_ENDPOINT, TV_GENRES_ENDPOINT, calculatePrice } from '@/core';
-import { useTmdb, useUserContext } from '@/hooks';
+import { useTmdb, useUserContext, useLocalStorage } from '@/hooks';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { ICON_SIZE } from "@/core";
-
 
 export const GENRES = {
   movies: [
@@ -33,15 +32,24 @@ export const GENRES = {
   ],
 };
 
+const allMovieLabels = GENRES.movies.map((g) => g.label);
+const allTvLabels = GENRES.tv.map((g) => g.label);
+
 export const GenreView = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
   const { mediaType = 'movies', genre = 'action' } = useParams();
   const { favorites, toggleFavorite } = useUserContext();
 
+  const [savedMovieGenres] = useLocalStorage<string[]>("preferred_movie_genres", allMovieLabels);
+  const [savedTvGenres] = useLocalStorage<string[]>("preferred_tv_genres", allTvLabels);
+
   const isMovie = mediaType === 'movies';
-  const genres = GENRES[mediaType as keyof typeof GENRES] ?? GENRES.movies;
-  const genreId = genres.find((g) => g.value === genre)?.id ?? genres[0].id;
+  const allGenres = GENRES[mediaType as keyof typeof GENRES] ?? GENRES.movies;
+  const savedLabels = isMovie ? savedMovieGenres : savedTvGenres;
+  const genres = allGenres.filter((g) => savedLabels.includes(g.label));
+
+  const genreId = genres.find((g) => g.value === genre)?.id ?? genres[0]?.id;
   const endpoint = isMovie ? MOVIE_GENRES_ENDPOINT : TV_GENRES_ENDPOINT;
 
   const { data } = useTmdb<MovieResponse>(endpoint, { page, with_genres: genreId });
@@ -52,13 +60,14 @@ export const GenreView = () => {
     primaryText: result.original_title ?? result.name,
     mediaType: isMovie ? 'movie' : 'tv' as const,
     secondaryText: isMovie ? `$${calculatePrice(result).toFixed(2)}` : undefined,
+    price: isMovie ? calculatePrice(result) : undefined,
   }));
 
-  const handleMediaTypeSwitch = (value: string) => {
+  function handleMediaTypeSwitch(value: string) {
     const newGenres = GENRES[value as keyof typeof GENRES] ?? GENRES.movies;
     navigate(`/genre/${value}/${newGenres[0].value}`);
     setPage(1);
-  };
+  }
 
   if (!data) {
     return <p className="text-center text-gray-400">Loading...</p>;
