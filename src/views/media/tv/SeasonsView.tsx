@@ -29,14 +29,11 @@ export const SeasonsView = () => {
                 className="relative rounded-2xl overflow-hidden cursor-pointer shadow-lg group"
                 onClick={() => navigate(`/tv/show/${id}/season/${season.season_number}`)}
               >
-                {/* Poster image — tall card */}
                 <img
                   className="w-full aspect-[2/3] object-cover"
                   src={getImageUrl(season.poster_path)}
                   alt={season.name}
                 />
-
-                {/* Top-left: Favorite button */}
                 <button
                   className="absolute top-2 left-2 bg-blue-500 rounded-full p-1.5 shadow transition active:scale-90"
                   onClick={(e) => {
@@ -77,7 +74,6 @@ export const SeasonsView = () => {
                   />
                 </button>
 
-                {/* Bottom label */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-2 pt-6 pb-2">
                   <p className="text-white text-xs font-semibold truncate">{season.name}</p>
                   <p className="text-blue-400 text-xs font-semibold">${price.toFixed(2)}</p>

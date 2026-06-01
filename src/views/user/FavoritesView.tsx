@@ -1,55 +1,54 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { ImageGrid, ImageOverlay, ButtonGroup } from "@/components";
+import { useNavigate } from "react-router-dom";
+import { ImageGrid, ImageOverlay } from "@/components";
 import { favoriteAction, type ImageCell } from "@/core";
 import { useUserContext } from "@/hooks";
+import { useState } from "react"
 
 export const FavoritesView = () => {
   const navigate = useNavigate();
   const { favorites, toggleFavorite, clearFavorites } = useUserContext();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const mediaType = searchParams.get('mediaType') || 'movie';
-  const isMovie = mediaType === 'movie';
-  const filteredFavorites = Array.from(favorites.values()).filter((item) =>
-    isMovie ? item.mediaType === 'movie' : item.mediaType === 'tv'
-  );
+  const [filter, setFilter] = useState<"movie" | "tv">("movie");
+  const allFavorites = Array.from(favorites.values());
+
+  const movieFavorites = allFavorites.filter((f) => f.mediaType === 'movie');
+  const tvFavorites = allFavorites.filter((f) => f.mediaType === 'tv');
+  
+  const filtered = filter === "movie" ? movieFavorites : tvFavorites;
 
   return (
     <section className="mx-auto max-w-7xl space-y-5 p-5">
       <div className="flex items-center justify-between">
         <h1 className="font-bold text-3xl">Favorites</h1>
-        {filteredFavorites.length > 0 && (
-          <button
-            className="rounded-lg bg-red-500/20 px-4 py-2 text-sm text-red-400 transition hover:bg-red-500/40"
-            onClick={clearFavorites}
-          >
+        {favorites.size > 0 && (
+          <button className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-500" onClick={clearFavorites}>
             Clear All
           </button>
         )}
       </div>
-      <ButtonGroup
-        value={mediaType}
-        options={[
-          { label: 'Movies', value: 'movie' },
-          { label: 'TV Shows', value: 'tv' },
-        ]}
-        onClick={(value) => setSearchParams({ mediaType: value })}
-      />
-      {filteredFavorites.length === 0 ? (
-        <p className="mt-10 text-gray-400">No {isMovie ? 'movie' : 'TV'} favorites yet.</p>
+
+      <div className="flex gap-5">
+        <button
+          className={`rounded px-4 py-2 text-white ${filter === "movie" ? "bg-blue-500" : "bg-gray-700 hover:bg-gray-600"}`}
+          onClick={() => setFilter("movie")}
+        >
+          Movies
+        </button>
+        <button
+          className={`rounded px-4 py-2 text-white ${filter === "tv" ? "bg-blue-500" : "bg-gray-700 hover:bg-gray-600"}`}
+          onClick={() => setFilter("tv")}
+        >
+          TV
+        </button>
+      </div>
+      {filtered.length === 0 ? (
+        <p className="mt-10 text-gray-400">{filter === "movie" ? "No movie favorites yet." : "No TV favorites yet."}</p>
       ) : (
         <ImageGrid
-          images={filteredFavorites}
-          onClick={(image) =>
-            isMovie
-              ? navigate(`/movie/${image.id}/credits`)
-              : navigate(`/tv/show/${image.secondaryID}/seasons`)
-          }
+          images={filtered}
+          onClick={(image) => (filter === "movie" ? navigate(`/movie/${image.id}/credits`) : navigate(`/tv/show/${image.id}/seasons`))}
         >
           {(image) => (
-            <ImageOverlay
-              actions={[favoriteAction((image: ImageCell) => favorites.has(image.id), toggleFavorite)]}
-              image={image}
-            />
+            <ImageOverlay actions={[favoriteAction((image: ImageCell) => favorites.has(image.id), toggleFavorite)]} image={image} />
           )}
         </ImageGrid>
       )}
