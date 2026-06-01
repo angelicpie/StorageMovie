@@ -45,7 +45,7 @@ export const FavoritesView = () => {
       ) : (
         <ImageGrid
           images={filtered}
-          onClick={(image) => (filter === "movie" ? navigate(`/movie/${image.id}/credits`) : navigate(`/tv/show/${image.id}/seasons`))}
+          onClick={(image) => (filter === "movie" ? navigate(`/movie/${image.id}/credits`) : navigate(`/tv/show/${image.secondaryID}/seasons`))}
         >
           {(image) => (
             <ImageOverlay actions={[favoriteAction((image: ImageCell) => favorites.has(image.id), toggleFavorite)]} image={image} />
