@@ -1,5 +1,5 @@
 import { ImageGrid, Pagination } from '@/components';
-import { type ImageCell, type SearchResponse, getImageUrl, ICON_SIZE, RATE_LIMIT_DELAY, SEARCH_ENDPOINT } from '@/core';
+import { type ImageCell, type SearchResponse, getImageUrl, ICON_SIZE, RATE_LIMIT_DELAY, SEARCH_ENDPOINT, calculatePrice } from '@/core';
 import { useDebounce, useTmdb, useUserContext } from '@/hooks';
 import { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
@@ -13,21 +13,24 @@ export const SearchView = () => {
   const mediaType = searchParams.get('mediaType') || 'movie';
   const { favorites, toggleFavorite } = useUserContext();
   const [page, setPage] = useState<number>(1);
+  const isMovie = mediaType === 'movie';
+
   const { data } = useTmdb<SearchResponse>(`${SEARCH_ENDPOINT}/${mediaType}`, { query: debouncedQuery, page });
 
   const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
     id: result.id,
     imageUrl: getImageUrl(result.poster_path ?? result.profile_path ?? ''),
     primaryText: result.original_title ?? result.name ?? '',
+    mediaType: isMovie ? 'movie' as const : 'tv' as const,
+    secondaryText: isMovie ? `$${calculatePrice(result).toFixed(2)}` : undefined,
+    price: isMovie ? calculatePrice(result) : undefined,
   }));
 
   if (!data) {
     return <p className="text-center text-gray-400">Loading...</p>;
   }
 
-  const isMovie = mediaType === 'movie';
-
-  const handleClick = (image: ImageCell) => {
+  function handleClick(image: ImageCell) {
     if (mediaType === 'movie') {
       navigate(`/movie/${image.id}/credits`);
     } else if (mediaType === 'tv') {
@@ -35,12 +38,11 @@ export const SearchView = () => {
     } else {
       navigate(`/person/${image.id}/career`);
     }
-  };
+  }
 
   return (
     <section className="mx-auto w-full max-w-7xl space-y-5 p-5">
       <h1 className="mb-4 text-3xl font-bold">Search for: {query}</h1>
-
       <ImageGrid images={gridData} onClick={handleClick}>
         {(image) =>
           isMovie && (
@@ -60,7 +62,6 @@ export const SearchView = () => {
           )
         }
       </ImageGrid>
-
       {data.results.length ? (
         <Pagination page={page} maxPages={data.total_pages} onClick={setPage} />
       ) : (

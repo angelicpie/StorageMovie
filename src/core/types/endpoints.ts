@@ -59,6 +59,7 @@ export type SeasonsResponse = {
     episode_count: number;
     poster_path: string;
     season_number: number;
+
   }>;
 };
 
@@ -109,5 +110,7 @@ export type SearchResponse = {
     poster_path?: string;
     profile_path?: string;
     media_type?: string;
+    release_date?: string;
+    first_air_date?: string;
   }>;
 };
