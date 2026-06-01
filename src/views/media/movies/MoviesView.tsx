@@ -25,6 +25,7 @@ export const MoviesView = () => {
     primaryText: result.original_title,
     secondaryText: `$${calculatePrice(result).toFixed(2)}`,
     mediaType: 'movie' as const,
+    price: calculatePrice(result),
   }));
 
 

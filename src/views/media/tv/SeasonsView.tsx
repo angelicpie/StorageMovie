@@ -44,7 +44,8 @@ export const SeasonsView = () => {
                       primaryText: season.name,
                       secondaryID: id,
                       mediaType: 'tv' as const,
-                      price: calculatePrice(season), 
+                      secondaryText: `$${calculatePrice(season).toFixed(2)}`, 
+                      price: calculatePrice(season),
                     });
                   }}
                 >
@@ -64,7 +65,8 @@ export const SeasonsView = () => {
                       primaryText: season.name,
                       secondaryID: id,
                       mediaType: 'tv' as const,
-                      price: calculatePrice(season), 
+                      secondaryText: `$${calculatePrice(season).toFixed(2)}`,
+                      price: calculatePrice(season),
                     });
                   }}
                 >
