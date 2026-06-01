@@ -1,3 +1,5 @@
+// GenreView.tsx
+
 import { ButtonGroup, ImageGrid, Pagination } from '@/components';
 import {
   ICON_SIZE,
@@ -42,18 +44,41 @@ export const GENRES = {
 export const GenreView = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
+
   const { mediaType = 'movies', genre = 'action' } = useParams();
-  const { favorites, toggleFavorite, genrePrefs } = useUserContext();
+
+  const { favorites, toggleFavorite } = useUserContext();
+
+  // READ DIRECTLY FROM LOCAL STORAGE
+  const savedMovieGenres: string[] = JSON.parse(localStorage.getItem('preferred_movie_genres') ?? '[]');
+
+  const savedTvGenres: string[] = JSON.parse(localStorage.getItem('preferred_tv_genres') ?? '[]');
 
   const isMovie = mediaType === 'movies';
+
   const allGenres = GENRES[mediaType as keyof typeof GENRES] ?? GENRES.movies;
-  const savedLabels = isMovie ? genrePrefs.movies : genrePrefs.tv;
+
+  const savedLabels = isMovie ? savedMovieGenres : savedTvGenres;
+
   const genres = allGenres.filter((g) => savedLabels.includes(g.label));
 
-  const genreId = genres.find((g) => g.value === genre)?.id ?? genres[0]?.id;
+  // HANDLE EMPTY GENRES
+  if (genres.length === 0) {
+    return (
+      <section className="max-w-[1200px] mx-auto p-5">
+        <p className="text-gray-400">No genres selected in settings.</p>
+      </section>
+    );
+  }
+
+  const genreId = genres.find((g) => g.value === genre)?.id ?? genres[0].id;
+
   const endpoint = isMovie ? MOVIE_GENRES_ENDPOINT : TV_GENRES_ENDPOINT;
 
-  const { data } = useTmdb<MovieResponse>(endpoint, { page, with_genres: genreId });
+  const { data } = useTmdb<MovieResponse>(endpoint, {
+    page,
+    with_genres: genreId,
+  });
 
   const gridData: ImageCell[] = (data?.results ?? []).map((result) => ({
     id: result.id,
@@ -66,7 +91,9 @@ export const GenreView = () => {
 
   function handleMediaTypeSwitch(value: string) {
     const newGenres = GENRES[value as keyof typeof GENRES] ?? GENRES.movies;
+
     navigate(`/genre/${value}/${newGenres[0].value}`);
+
     setPage(1);
   }
 
@@ -86,19 +113,28 @@ export const GenreView = () => {
             ]}
             onClick={handleMediaTypeSwitch}
           />
+
           <ButtonGroup
             value={genre}
             options={genres}
             onClick={(value) => {
               navigate(`/genre/${mediaType}/${value}`);
+
               setPage(1);
             }}
           />
         </div>
       </div>
+
       <ImageGrid
         images={gridData}
-        onClick={(image) => navigate(isMovie ? `/movie/${image.id}/credits` : `/tv/show/${image.id}/seasons`)}
+        onClick={(image) =>
+          navigate(
+            isMovie
+              ? `/movie/${image.id}/credits`
+              : `/tv/show/${image.id}/seasons`
+          )
+        }
       >
         {(image) =>
           isMovie && (
@@ -106,6 +142,7 @@ export const GenreView = () => {
               className="absolute top-2 right-2 z-10 rounded-full bg-black/50 p-2 transition hover:bg-black/70"
               onClick={(e) => {
                 e.stopPropagation();
+
                 toggleFavorite(image);
               }}
             >
@@ -118,7 +155,12 @@ export const GenreView = () => {
           )
         }
       </ImageGrid>
-      <Pagination page={page} maxPages={data.total_pages} onClick={setPage} />
+
+      <Pagination
+        page={page}
+        maxPages={data.total_pages}
+        onClick={setPage}
+      />
     </section>
   );
 };
